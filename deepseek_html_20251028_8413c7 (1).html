@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoodteqPH Attendance System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ffb300, #ff8a00);
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: #000000;
+            min-height: 100vh;
+        }
+        
+        .welcome-screen, .login-screen, .dashboard {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Welcome Screen Styles */
+        .welcome-screen {
+            background: var(--primary-gradient);
+            color: white;
+            text-align: center;
+        }
+        
+        .logo-container {
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-get-started {
+            background: white;
+            color: #ff8a00;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-get-started:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* Login Screen Styles */
+        .login-screen {
+            background-color: white;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            transition: var(--transition);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: #ffb300;
+            box-shadow: 0 0 0 0.25rem rgba(255, 179, 0, 0.25);
+        }
+        
+        .btn-login {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 138, 0, 0.3);
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .create-account-link {
+            color: #ff8a00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .create-account-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dashboard Styles */
+        .dashboard {
+            background-color: var(--light-bg);
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .dashboard-title {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dashboard-content {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .attendance-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .attendance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .time-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+        
+        .time-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 138, 0, 0.3);
+        }
+        
+        .time-btn:disabled {
+            background: #e0e0e0;
+            color: #999;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .today-log {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .log-item:last-child {
+            border-bottom: none;
+        }
+        
+        .log-label {
+            color: #666;
+        }
+        
+        .log-value {
+            font-weight: 500;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            overflow-x: auto;
+        }
+        
+        .table-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn-export {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 138, 0, 0.3);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th {
+            background-color: #f8f9fa;
+            color: #555;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .date-range-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .date-input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .date-input-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .btn-filter {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+            align-self: flex-end;
+            height: fit-content;
+        }
+        
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 138, 0, 0.3);
+        }
+        
+        /* Overtime Section */
+        .overtime-approval {
+            margin-top: 0.5rem;
+        }
+        
+        .approval-select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .overtime-task {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            font-size: 0.85rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+        
+        /* Delete Button */
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+        
+        /* Summary Section */
+        .summary-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .summary-title {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Profile Picture Upload */
+        .profile-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-upload input {
+            display: none;
+        }
+        
+        .profile-upload-label {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .profile-upload-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 138, 0, 0.3);
+        }
+        
+        /* Logout Button */
+        .btn-logout {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-left: 1rem;
+        }
+        
+        .btn-logout:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .welcome-text {
+                font-size: 2rem;
+            }
+            
+            .login-container {
+                padding: 2rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .table-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .attendance-card {
+                padding: 1.5rem;
+            }
+            
+            .date-range-container {
+                flex-direction: column;
+            }
+            
+            .btn-filter {
+                align-self: stretch;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transition: var(--transition);
+            transform: translateX(150%);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #28a745;
+        }
+        
+        .notification.error {
+            background: #dc3545;
+        }
+        
+        /* Logo Styles */
+        .company-logo {
+            max-height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .cdesa-logo {
+            max-height: 40px;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="logo-container">
+            <img src="assets/img/woodteqph_logo.png" alt="WoodteqPH Logo" class="company-logo" style="width: 90px; height:50;">
+            <div class="logo-icon">
+                <i class="fas fa-business-time"></i>
+            </div>
+            <div class="logo">WoodteqPH</div>
+        </div>
+        <h1 class="welcome-text">Welcome to WoodteqPH Attendance System</h1>
+        <button class="btn-get-started" id="getStartedBtn">Get Started</button>
+    </div>
+    
+    <!-- Login Screen -->
+    <div class="login-screen hidden" id="loginScreen">
+        <div class="login-container fade-in">
+            <div class="login-header">
+                <img src="https://via.placeholder.com/250x80/ffb300/ffffff?text=WoodteqPH" alt="WoodteqPH Logo" class="company-logo">
+                <h2 class="login-title">Welcome Back</h2>
+                <p class="login-subtitle">Sign in to your account</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="username" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+                <div class="profile-upload">
+                    <label for="profilePicture" class="profile-upload-label">
+                        <i class="fas fa-camera me-2"></i>Upload Profile Picture
+                    </label>
+                    <input type="file" id="profilePicture" accept="image/*">
+                </div>
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+            <div class="login-footer">
+                <p>Your attendance data will be securely stored</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dashboard -->
+    <div class="dashboard hidden" id="dashboard">
+        <div class="dashboard-header">
+            <div class="d-flex align-items-center">
+             <img src="assets/img/woodteqph_logo.png" alt="WoodteqPH Logo" class="company-logo" style="width: 90px; height:50;">
+
+
+                <img id="cdesaLogo" src="" alt="Cdesa Logo" class="cdesa-logo hidden">
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <!-- Profile picture will be displayed here -->
+                </div>
+                <div>
+                    <div class="user-name" id="userName">User</div>
+                    <div class="user-role">Employee</div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <!-- Filter Section -->
+            <div class="filter-section fade-in">
+                <h3 class="filter-title">
+                    <i class="fas fa-filter"></i> Filter Attendance Records
+                </h3>
+                <div class="date-range-container">
+                    <div class="date-input-group">
+                        <label for="startDate">From Date</label>
+                        <input type="date" class="form-control" id="startDate">
+                    </div>
+                    <div class="date-input-group">
+                        <label for="endDate">To Date</label>
+                        <input type="date" class="form-control" id="endDate">
+                    </div>
+                    <button class="btn-filter" id="applyFilterBtn">
+                        <i class="fas fa-filter me-2"></i>Apply Filter
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="summary-section fade-in">
+                <div class="summary-card">
+                    <div class="summary-title">Total Regular Hours</div>
+                    <div class="summary-value" id="totalRegularHours">0 hrs</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-title">Total Overtime Hours</div>
+                    <div class="summary-value" id="totalOvertimeHours">0 hrs</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-title">Days Worked</div>
+                    <div class="summary-value" id="daysWorked">0</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="attendance-card fade-in">
+                        <h3 class="card-title">Today's Attendance</h3>
+                        <button class="time-btn" id="timeInOutBtn">Time In</button>
+                        <div class="today-log">
+                            <div class="log-item">
+                                <span class="log-label">Time In:</span>
+                                <span class="log-value" id="timeInValue">--:--</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-label">Time Out:</span>
+                                <span class="log-value" id="timeOutValue">--:--</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-label">Total Hours:</span>
+                                <span class="log-value" id="totalHoursValue">--:--</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-label">Overtime:</span>
+                                <span class="log-value" id="overtimeValue">--:--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="attendance-card fade-in">
+                        <h3 class="card-title">Overtime Log</h3>
+                        <div class="today-log">
+                            <div class="log-item">
+                                <span class="log-label">Approved by:</span>
+                                <select class="approval-select" id="overtimeApproval">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved by Ma'am Joyce">Approved by Ma'am Joyce</option>
+                                    <option value="Approved by Sir Ariel">Approved by Sir Ariel</option>
+                                </select>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-label">Task Description:</span>
+                                <textarea class="overtime-task" id="overtimeTask" placeholder="Describe the task completed during overtime"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container fade-in">
+                <div class="table-title">
+                    <h3>Attendance History</h3>
+                    <button class="btn-export" id="exportBtn">
+                        <i class="fas fa-file-excel me-2"></i>Export to Excel
+                    </button>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Total Hours</th>
+                            <th>Overtime</th>
+                            <th>Approval</th>
+                            <th>Task</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script>
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboard = document.getElementById('dashboard');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const loginForm = document.getElementById('loginForm');
+        const timeInOutBtn = document.getElementById('timeInOutBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const timeInValue = document.getElementById('timeInValue');
+        const timeOutValue = document.getElementById('timeOutValue');
+        const totalHoursValue = document.getElementById('totalHoursValue');
+        const overtimeValue = document.getElementById('overtimeValue');
+        const attendanceTableBody = document.getElementById('attendanceTableBody');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        const totalRegularHours = document.getElementById('totalRegularHours');
+        const totalOvertimeHours = document.getElementById('totalOvertimeHours');
+        const daysWorked = document.getElementById('daysWorked');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const userAvatar = document.getElementById('userAvatar');
+        const profilePictureInput = document.getElementById('profilePicture');
+        const overtimeApproval = document.getElementById('overtimeApproval');
+        const overtimeTask = document.getElementById('overtimeTask');
+        const notification = document.getElementById('notification');
+        const cdesaLogo = document.getElementById('cdesaLogo');
+        
+        // State variables
+        let isClockedIn = false;
+        let clockInTime = null;
+        let currentUser = null;
+        let attendanceData = [];
+        let filteredData = [];
+        
+        // Initialize the app
+        function init() {
+            // Set default date range (last 7 days)
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 7);
+            
+            startDateInput.value = formatDateForInput(startDate);
+            endDateInput.value = formatDateForInput(endDate);
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showDashboard();
+            }
+            
+            // Event listeners
+            getStartedBtn.addEventListener('click', showLoginScreen);
+            loginForm.addEventListener('submit', handleLogin);
+            timeInOutBtn.addEventListener('click', handleTimeInOut);
+            exportBtn.addEventListener('click', exportToExcel);
+            applyFilterBtn.addEventListener('click', applyDateFilter);
+            logoutBtn.addEventListener('click', handleLogout);
+            profilePictureInput.addEventListener('change', handleProfilePictureUpload);
+        }
+        
+        // Save user info to localStorage
+        function saveUserData(username, data) {
+            localStorage.setItem(username, JSON.stringify(data));
+        }
+
+        // Load user info
+        function loadUserData(username) {
+            const storedData = localStorage.getItem(username);
+            return storedData ? JSON.parse(storedData) : null;
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Show login screen
+        function showLoginScreen() {
+            welcomeScreen.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+        }
+        
+        // Handle login form submission
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if user exists
+            const userData = loadUserData(username);
+            
+            if (userData && userData.password === password) {
+                // Set current user
+                currentUser = {
+                    id: userData.id,
+                    username: username,
+                    name: userData.name,
+                    email: userData.email,
+                    profilePicture: userData.profilePicture
+                };
+                
+                // Handle profile picture if uploaded
+                if (profilePictureInput.files.length > 0) {
+                    const file = profilePictureInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        currentUser.profilePicture = e.target.result;
+                        saveUserData(username, {
+                            ...userData,
+                            profilePicture: e.target.result
+                        });
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        showDashboard();
+                        showNotification('Welcome back, ' + username + '!');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showDashboard();
+                    showNotification('Welcome back, ' + username + '!');
+                }
+            } else {
+                // Create new user
+                currentUser = {
+                    id: generateUserId(),
+                    username: username,
+                    name: username,
+                    email: `${username}@woodteqph.com`,
+                    profilePicture: null
+                };
+                
+                // Handle profile picture if uploaded
+                if (profilePictureInput.files.length > 0) {
+                    const file = profilePictureInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        currentUser.profilePicture = e.target.result;
+                        saveUserData(username, {
+                            id: currentUser.id,
+                            username: username,
+                            name: username,
+                            email: `${username}@woodteqph.com`,
+                            password: password,
+                            profilePicture: e.target.result,
+                            attendance: []
+                        });
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        showDashboard();
+                        showNotification('Account created successfully!');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    saveUserData(username, {
+                        id: currentUser.id,
+                        username: username,
+                        name: username,
+                        email: `${username}@woodteqph.com`,
+                        password: password,
+                        profilePicture: null,
+                        attendance: []
+                    });
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showDashboard();
+                    showNotification('Account created successfully!');
+                }
+            }
+        }
+        
+        // Load user's attendance data
+        function loadUserAttendance() {
+            const userData = loadUserData(currentUser.username);
+            if (userData) {
+                attendanceData = userData.attendance || [];
+                filteredData = [...attendanceData];
+                populateAttendanceTable();
+                updateSummary();
+                updateTodayStatus();
+            }
+        }
+        
+        // Update today's status
+        function updateTodayStatus() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayRecord = attendanceData.find(record => record.date === today);
+            
+            if (todayRecord) {
+                timeInValue.textContent = todayRecord.timeIn;
+                if (todayRecord.timeOut) {
+                    timeOutValue.textContent = todayRecord.timeOut;
+                    totalHoursValue.textContent = todayRecord.totalHours + ' hrs';
+                    overtimeValue.textContent = todayRecord.overtime + ' hrs';
+                    timeInOutBtn.textContent = 'Time In';
+                    timeInOutBtn.disabled = true;
+                    isClockedIn = false;
+                } else {
+                    timeOutValue.textContent = '--:--';
+                    totalHoursValue.textContent = '--:--';
+                    overtimeValue.textContent = '--:--';
+                    timeInOutBtn.textContent = 'Time Out';
+                    isClockedIn = true;
+                    clockInTime = new Date(`${today}T${todayRecord.timeIn}`);
+                }
+            } else {
+                timeInValue.textContent = '--:--';
+                timeOutValue.textContent = '--:--';
+                totalHoursValue.textContent = '--:--';
+                overtimeValue.textContent = '--:--';
+                timeInOutBtn.textContent = 'Time In';
+                timeInOutBtn.disabled = false;
+                isClockedIn = false;
+            }
+        }
+        
+        // Save attendance data
+        function saveAttendanceData() {
+            const userData = loadUserData(currentUser.username);
+            if (userData) {
+                userData.attendance = attendanceData;
+                saveUserData(currentUser.username, userData);
+            }
+        }
+        
+        // Generate a unique user ID
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        // Show dashboard
+        function showDashboard() {
+            loginScreen.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+            
+            // Update user info
+            userName.textContent = currentUser.username;
+            
+            // Update profile picture
+            if (currentUser.profilePicture) {
+                userAvatar.innerHTML = `<img src="${currentUser.profilePicture}" alt="Profile Picture">`;
+            } else {
+                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+            }
+            
+            // Show Cdesa logo if username is "Cdesa"
+            if (currentUser.username.toLowerCase() === 'cdesa') {
+                cdesaLogo.src = 'https://via.placeholder.com/150x50/4a86e8/ffffff?text=Cdesa';
+                cdesaLogo.classList.remove('hidden');
+            } else {
+                cdesaLogo.classList.add('hidden');
+            }
+            
+            // Load user's attendance data
+            loadUserAttendance();
+            
+            // Add fade-in animation to dashboard elements
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                }, 100);
+            });
+        }
+        
+        // Handle time in/out button
+        function handleTimeInOut() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            if (!isClockedIn) {
+                // Clock in
+                isClockedIn = true;
+                clockInTime = now;
+                timeInOutBtn.textContent = 'Time Out';
+                timeInValue.textContent = timeString;
+                timeOutValue.textContent = '--:--';
+                totalHoursValue.textContent = '--:--';
+                overtimeValue.textContent = '--:--';
+                
+                showNotification('Time In recorded successfully!');
+            } else {
+                // Clock out
+                isClockedIn = false;
+                const timeOut = now;
+                const hoursWorked = (timeOut - clockInTime) / (1000 * 60 * 60);
+                const regularHours = Math.min(hoursWorked, 8);
+                const overtime = Math.max(hoursWorked - 8, 0);
+                
+                timeOutValue.textContent = timeString;
+                totalHoursValue.textContent = hoursWorked.toFixed(2) + ' hrs';
+                overtimeValue.textContent = overtime.toFixed(2) + ' hrs';
+                
+                timeInOutBtn.textContent = 'Time In';
+                timeInOutBtn.disabled = true;
+                
+                // Add to attendance data
+                const today = new Date().toISOString().split('T')[0];
+                const newRecord = {
+                    date: today,
+                    timeIn: timeInValue.textContent,
+                    timeOut: timeString,
+                    totalHours: hoursWorked.toFixed(2),
+                    overtime: overtime.toFixed(2),
+                    approval: overtimeApproval.value,
+                    task: overtimeTask.value
+                };
+                
+                attendanceData.unshift(newRecord);
+                filteredData.unshift(newRecord);
+                
+                // Save data and update UI
+                saveAttendanceData();
+                populateAttendanceTable();
+                updateSummary();
+                
+                // Reset overtime fields
+                overtimeApproval.value = 'Pending';
+                overtimeTask.value = '';
+                
+                showNotification('Time Out recorded successfully!');
+            }
+        }
+        
+        // Apply date filter
+        function applyDateFilter() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            
+            if (startDate > endDate) {
+                showNotification('Start date cannot be after end date', 'error');
+                return;
+            }
+            
+            filteredData = attendanceData.filter(record => {
+                const recordDate = new Date(record.date);
+                return recordDate >= startDate && recordDate <= endDate;
+            });
+            
+            populateAttendanceTable();
+            updateSummary();
+            showNotification('Filter applied successfully!');
+        }
+        
+        // Update summary section
+        function updateSummary() {
+            let totalRegular = 0;
+            let totalOvertime = 0;
+            let uniqueDays = new Set();
+            
+            filteredData.forEach(record => {
+                const regular = Math.min(parseFloat(record.totalHours), 8);
+                const overtime = parseFloat(record.overtime);
+                
+                totalRegular += regular;
+                totalOvertime += overtime;
+                uniqueDays.add(record.date);
+            });
+            
+            totalRegularHours.textContent = totalRegular.toFixed(2) + ' hrs';
+            totalOvertimeHours.textContent = totalOvertime.toFixed(2) + ' hrs';
+            daysWorked.textContent = uniqueDays.size;
+        }
+        
+        // Populate attendance table
+        function populateAttendanceTable() {
+            attendanceTableBody.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="8" class="text-center py-4 text-muted">No attendance records found</td>`;
+                attendanceTableBody.appendChild(row);
+                return;
+            }
+            
+            filteredData.forEach((record, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(record.date)}</td>
+                    <td>${record.timeIn}</td>
+                    <td>${record.timeOut || '--:--'}</td>
+                    <td>${record.totalHours || '--:--'} hrs</td>
+                    <td>${record.overtime || '--:--'} hrs</td>
+                    <td>${record.approval || 'Pending'}</td>
+                    <td>${record.task || '-'}</td>
+                    <td>
+                        <button class="btn-delete" onclick="deleteRecord(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                attendanceTableBody.appendChild(row);
+            });
+        }
+        
+        // Delete record
+        function deleteRecord(index) {
+            if (confirm('Are you sure you want to delete this attendance record?')) {
+                const record = filteredData[index];
+                
+                // Remove from filtered data
+                filteredData.splice(index, 1);
+                
+                // Remove from main data
+                const mainIndex = attendanceData.findIndex(item => 
+                    item.date === record.date && item.timeIn === record.timeIn);
+                if (mainIndex !== -1) {
+                    attendanceData.splice(mainIndex, 1);
+                }
+                
+                // Save data and update UI
+                saveAttendanceData();
+                populateAttendanceTable();
+                updateSummary();
+                updateTodayStatus();
+                
+                showNotification('Record deleted successfully!');
+            }
+        }
+        
+        // Handle profile picture upload
+        function handleProfilePictureUpload(e) {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.profilePicture = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    // Update user data in localStorage
+                    const userData = loadUserData(currentUser.username);
+                    if (userData) {
+                        userData.profilePicture = e.target.result;
+                        saveUserData(currentUser.username, userData);
+                    }
+                    
+                    // Update profile picture in dashboard if already logged in
+                    if (!dashboard.classList.contains('hidden')) {
+                        userAvatar.innerHTML = `<img src="${currentUser.profilePicture}" alt="Profile Picture">`;
+                    }
+                    
+                    showNotification('Profile picture updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                dashboard.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+                
+                // Reset form
+                loginForm.reset();
+                
+                showNotification('Logged out successfully!');
+            }
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        // Format date for input field
+        function formatDateForInput(date) {
+            return date.toISOString().split('T')[0];
+        }
+        
+        // Export to Excel
+        function exportToExcel() {
+            if (filteredData.length === 0) {
+                showNotification('No data to export', 'error');
+                return;
+            }
+            
+            // Prepare data for export
+            const exportData = filteredData.map(record => ({
+                Date: formatDate(record.date),
+                'Time In': record.timeIn,
+                'Time Out': record.timeOut || '--:--',
+                'Total Hours': record.totalHours || '--:--',
+                Overtime: record.overtime || '--:--',
+                'Approval Status': record.approval || 'Pending',
+                'Task Description': record.task || '-'
+            }));
+            
+            // Create worksheet
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            
+            // Create workbook
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
+            
+            // Export to file
+            XLSX.writeFile(wb, `attendance_record_${formatDateForInput(new Date())}.xlsx`);
+            showNotification('Excel file downloaded successfully!');
+        }
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
